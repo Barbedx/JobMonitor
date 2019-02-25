@@ -1,0 +1,23 @@
+{
+  "name": "JobMonitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barbedx/jobmonitor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/barbedx/jobmonitor/issues"
+  },
+  "homepage": "https://github.com/barbedx/jobmonitor#readme",
+  "dependencies": {
+    "@aspnet/signalr": "^1.1.2"
+  }
+}

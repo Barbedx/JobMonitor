@@ -1,0 +1,51 @@
+﻿<Window x:Class="Job_Monitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Job_Monitor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="DataGridRow">
+                <Style.Setters>
+                    <Setter Property="Background" Value="{Binding JobColor}"/>
+                </Style.Setters>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid >
+        <DataGrid Name="dataGrid1" IsReadOnly="True" AutoGenerateColumns="False" 
+                 
+                  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Server Name"       IsReadOnly="True"  Binding="{Binding Job.ServerName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Job Name"            Binding="{Binding Job.Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Current status Name" Binding="{Binding Job.CurentExecutionStatus}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Current step"        Binding="{Binding Job.CurentExecutionStep}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Last run"            Binding="{Binding Job.LastRunDate}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Next run"            Binding="{Binding Job.NextRunDate}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Last Outcome"        Binding="{Binding Job.LastRunOutcome}"></DataGridTextColumn>
+                <DataGridCheckBoxColumn Header="Enable" Binding="{Binding Job.Enable, Mode=OneWay}"></DataGridCheckBoxColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="0" Background="BlanchedAlmond" Padding="10">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="12" Text="Last Job message: " VerticalAlignment="Center" />
+                                <TextBlock FontSize="12" Foreground="MidnightBlue" Text="{Binding Job.LastOutcomeMessage}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="12" Text="Last step message: " VerticalAlignment="Center" />
+                                <TextBlock FontSize="12" Foreground="MidnightBlue" Text="STUB" VerticalAlignment="Center" />
+                            </StackPanel> 
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+
+    </Grid>
+</Window>
