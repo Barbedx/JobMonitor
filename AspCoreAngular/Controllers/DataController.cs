@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AspCoreAngular.Models;
+using EFCore.BulkExtensions;
 using EFCore.BulkExtensions;
 using JobMonitor.BLL.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +51,9 @@ namespace AspCoreAngular.Controllers
 
             try
             {
-                _dataBaseContext.BulkInsertOrUpdateAsync(serversJobsData).ConfigureAwait(false);
+                var jobs = serversJobsData.SelectMany(x => x.Jobs).ToList();
+                _dataBaseContext.BulkInsertOrUpdate(serversJobsData);
+                _dataBaseContext.BulkInsertOrUpdate(jobs); 
                 _hubContext.Clients.All.SendMessage("server", "Data has been updated");
                 retMessage = "Success";
             }
@@ -61,19 +65,6 @@ namespace AspCoreAngular.Controllers
             return retMessage;
         }
 
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
 
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
-        }
     }
 }
