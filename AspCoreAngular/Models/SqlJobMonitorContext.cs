@@ -24,6 +24,7 @@ namespace AspCoreAngular.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+              
 
             }
         }
