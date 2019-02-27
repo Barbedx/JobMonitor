@@ -19,6 +19,7 @@ namespace AspCoreAngular.Models
 
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<SqlServer> Servers { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

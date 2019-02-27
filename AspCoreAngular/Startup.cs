@@ -60,7 +60,9 @@ namespace AspCoreAngular
                 app.UseExceptionHandler("/Error");
             }
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseSpaStaticFiles();
+
 
             app.UseCors("CorsPolicy");
             app.UseSignalR(r =>
