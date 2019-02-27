@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobMonitor.SignalRDataAcces
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspCoreAngular", "AspCoreAngular\AspCoreAngular.csproj", "{E8430B6A-FB6D-4269-80FF-112AD4E5AA52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobMonitor.Helper", "JobMonitor.Helper\JobMonitor.Helper.csproj", "{AD78AB08-17D2-41B5-99F6-29B5D224BF31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobMonitor.Helper", "JobMonitor.Helper\JobMonitor.Helper.csproj", "{AD78AB08-17D2-41B5-99F6-29B5D224BF31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

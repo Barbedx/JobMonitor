@@ -86,7 +86,9 @@ namespace JobMonitor.BLL
 
         public SqlServer GetJobsFromServer(SqlServer server)
         {
-            var jobsCollection = jobRep.GetJobsFromServer(server.SqlServerPath)
+            var jobsDummy = jobRep.GetJobsFromServer(server.SqlServerPath);
+
+            var jobsCollection = jobsDummy
                 .Select(x => new Job(server, x.Guid, x.Name)
                 {
                     LastRunDate = x.LastRunDate,
@@ -110,7 +112,9 @@ namespace JobMonitor.BLL
                     LastRunStepMessage = x.LastRunStepMessage,
                     LastRunCommand = x.LastRunCommand,
                     IsRunning = x.IsRunning,
-                    UpdatedDate = DateTime.Now
+                    UpdatedDate = DateTime.Now,
+                    SqlServerPath = server.SqlServerPath
+                    
                 })
                 .ToList();
             jobsCollection.AddRange(server.Jobs);

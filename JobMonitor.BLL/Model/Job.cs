@@ -12,35 +12,35 @@ namespace JobMonitor.BLL.Model
         {
             SqlServer = sqlServer;
             Guid = guid;
-            name = Name;
+            Name = name;
         }
         public Job() { }
 
-        public Guid Guid { get; private set; }
-        public string Name { get; private set; }
+        public Guid Guid { get;   set; }
+        public string Name { get;   set; }
         public DateTime? LastRunDate { get; set; }
 
         public LastRunOutcome? LastRunOutcome { get; set; }
         public string LastOutcomeMessage { get; set; }
-        //public int CurentRetryAttempt { get; internal set; }
-        public DateTime? NextRunDate { get; internal set; }
-        public string Description { get; internal set; }
-        public string JobOwner { get; internal set; }
-        public string JobCategory { get; internal set; }
-        public int NumberOfSteps { get; internal set; }
-        public bool JobEnabled { get; internal set; }
-        public bool IsScheduled { get; internal set; }
-        public string SheduleName { get; internal set; }
-        public string Frequency { get; internal set; }
-        public string Recurrence { get; internal set; }
-        public string SubdayFrequency { get; internal set; }
-        public TimeSpan? MaxDuration { get; internal set; }
-        public TimeSpan? LastRunDuration { get; internal set; }
-        public int? LastRunStepNumber { get; internal set; }
-        public string LastRunStepName { get; internal set; }
-        public string LastRunStepMessage { get; internal set; }
-        public string LastRunCommand { get; internal set; }
-        public bool IsRunning { get; internal set; }
+        //public int CurentRetryAttempt { get;  set; }
+        public DateTime? NextRunDate { get;  set; }
+        public string Description { get;  set; }
+        public string JobOwner { get;  set; }
+        public string JobCategory { get;  set; }
+        public int NumberOfSteps { get;  set; }
+        public bool JobEnabled { get;  set; }
+        public bool IsScheduled { get;  set; }
+        public string SheduleName { get;  set; }
+        public string Frequency { get;  set; }
+        public string Recurrence { get;  set; }
+        public string SubdayFrequency { get;  set; }
+        public TimeSpan? MaxDuration { get;  set; }
+        public TimeSpan? LastRunDuration { get;  set; }
+        public int? LastRunStepNumber { get;  set; }
+        public string LastRunStepName { get;  set; }
+        public string LastRunStepMessage { get;  set; }
+        public string LastRunCommand { get;  set; }
+        public bool IsRunning { get;  set; }
         public DateTime? UpdatedDate { get; set; }
 
         public string SqlServerPath { get; set; }

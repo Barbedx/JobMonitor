@@ -24,6 +24,7 @@ namespace AspCoreAngular.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+              
 
             }
         }
@@ -32,9 +33,8 @@ namespace AspCoreAngular.Models
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
 
-            var timeSpanSecondsConverter = new ValueConverter<TimeSpan?,int>(
-                    converter => converter.Value.Seconds,
-                    converter => TimeSpan.FromSeconds(converter));
+         
+
 
             modelBuilder.Entity<Job>(entity =>
             {
@@ -78,8 +78,8 @@ namespace AspCoreAngular.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.LastRunDuration)
-                    .HasColumnName("lastRunDuration")
-                    .HasConversion(timeSpanSecondsConverter);
+                    .HasColumnName("LastRunDuration")
+                    .HasConversion( new TimeSpanToTicksConverter());
                     
 
                 entity.Property(e => e.LastRunOutcome).HasColumnName("lastRunOutcome");
@@ -96,8 +96,8 @@ namespace AspCoreAngular.Models
                 entity.Property(e => e.LastRunStepNumber).HasColumnName("lastRunStepNumber");
 
                 entity.Property(e => e.MaxDuration)
-                .HasColumnName("maxDuration")
-                .HasConversion(timeSpanSecondsConverter);
+                .HasColumnName("MaxDuration")
+                .HasConversion(new TimeSpanToTicksConverter());
 
                 entity.Property(e => e.Name)
                     .IsRequired()

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace AspCoreAngular
 {
@@ -18,11 +20,11 @@ namespace AspCoreAngular
         }
 
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddLogging(b => b.AddConsole().AddDebug().AddEventSourceLogger());
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -36,7 +38,13 @@ namespace AspCoreAngular
                .AllowAnyOrigin();
            }));
             services.AddSignalR(cnfg => cnfg.EnableDetailedErrors=true);
-            services.AddDbContext<SqlJobMonitorContext>( x => x.UseSqlServer(Configuration["connectionStrings:SqlAzureDatabase"]));
+            services.AddDbContext<SqlJobMonitorContext>(optionsBuilder =>
+            {
+                optionsBuilder.UseLoggerFactory(services.BuildServiceProvider().GetService<ILoggerFactory>());
+                optionsBuilder.UseSqlServer(Configuration["connectionStrings:SqlAzureDatabase"]);
+
+            }
+            );
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

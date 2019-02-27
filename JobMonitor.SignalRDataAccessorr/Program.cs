@@ -67,6 +67,7 @@ namespace JobMonitor.SignalRDataAccessorr
 
         private static IList<string> GetServerList()
         {
+            if (IsTest) return new List<string> { "deuntp064" };
             using (var client = new WebClient())
             {
                 client.Headers[HttpRequestHeader.Accept]="application/json";
@@ -97,7 +98,7 @@ namespace JobMonitor.SignalRDataAccessorr
 
             while (!cancelationToken.IsCancellationRequested)
             {
-                var serverPathList = GetServerList();
+                var serverPathList =   GetServerList();
 
                 var serverList = IsTest ? jobman.GetMockData(5) : jobman.GetAllServersJobsInfo(serverPathList);//GetAllJobInfo();
                 logger.Trace($"Received from Data Server {serverList.Count} servers with {serverList.SelectMany(x => x.Jobs).Count()}");
