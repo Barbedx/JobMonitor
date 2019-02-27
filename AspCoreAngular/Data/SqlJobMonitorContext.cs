@@ -1,25 +1,31 @@
 ﻿using System;
 using JobMonitor.BLL.Model;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace AspCoreAngular.Models
+namespace AspCoreAngular.Data
 {
-    public partial class SqlJobMonitorContext : DbContext
+    public partial class SqlJobMonitorContext : IdentityDbContext<ApplicationUser>
     {
-        public SqlJobMonitorContext()
-        {
-        }
+        //public SqlJobMonitorContext()
+        //{
+        //}
 
         public SqlJobMonitorContext(DbContextOptions<SqlJobMonitorContext> options)
             : base(options)
         {
         }
 
+        //public SqlJobMonitorContext(DbContextOptions options) : base(options)
+        //{
+        //}
+
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<SqlServer> Servers { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,14 +34,13 @@ namespace AspCoreAngular.Models
               
 
             }
+            //context.Database.EnsureCreated();//???
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
-
-         
-
 
             modelBuilder.Entity<Job>(entity =>
             {
@@ -80,8 +85,8 @@ namespace AspCoreAngular.Models
 
                 entity.Property(e => e.LastRunDuration)
                     .HasColumnName("LastRunDuration")
-                    .HasConversion( new TimeSpanToTicksConverter());
-                    
+                    .HasConversion(new TimeSpanToTicksConverter());
+
 
                 entity.Property(e => e.LastRunOutcome).HasColumnName("lastRunOutcome");
 
@@ -154,6 +159,24 @@ namespace AspCoreAngular.Models
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole("Admin"), new IdentityRole("User")
+                );
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser() { Email = "my@email.com", SecurityStamp = Guid.NewGuid().ToString(), UserName = "myname" }
+                );
+
+
+            base.OnModelCreating(modelBuilder);
+
+            //var context = serviceProvider.GetRequiredService<SqlJobMonitorContext>();
+            //var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+
+
         }
+
+
     }
 }

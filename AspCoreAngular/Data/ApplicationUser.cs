@@ -2,14 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace JobMonitor.BLL.Model
+namespace AspCoreAngular.Data
 {
-    public class User :IdentityUser
+    public class ApplicationUser:IdentityUser
     {
-        public long? FacebookId { get; set; }
-        
     }
 }

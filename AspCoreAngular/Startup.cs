@@ -1,7 +1,9 @@
 using AspCoreAngular.HubConfig;
-using AspCoreAngular.Models;
+using AspCoreAngular.Data;
+using JobMonitor.BLL.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace AspCoreAngular
 {
@@ -20,7 +25,7 @@ namespace AspCoreAngular
         }
 
         public IConfiguration Configuration { get; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -37,15 +42,48 @@ namespace AspCoreAngular
                .AllowAnyMethod()
                .AllowAnyOrigin();
            }));
-            services.AddSignalR(cnfg => cnfg.EnableDetailedErrors=true);
+            services.AddSignalR(cnfg => cnfg.EnableDetailedErrors = true);
             services.AddDbContext<SqlJobMonitorContext>(optionsBuilder =>
             {
+
                 optionsBuilder.UseLoggerFactory(services.BuildServiceProvider().GetService<ILoggerFactory>());
                 optionsBuilder.UseSqlServer(Configuration["connectionStrings:SqlAzureDatabase"]);
-
             }
             );
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+                    .AddEntityFrameworkStores<SqlJobMonitorContext>()
+                    .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(optionsBearer =>
+            {
+                optionsBearer.SaveToken = true;
+                optionsBearer.RequireHttpsMetadata = false;
+                optionsBearer.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["Jwt:site"],
+                    ValidIssuer =   Configuration["Jwt:site"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
+                };
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +97,9 @@ namespace AspCoreAngular
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            //SeedDatabase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
+
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseSpaStaticFiles();

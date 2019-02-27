@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspCoreAngular.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -15,13 +16,19 @@ namespace AspCoreAngular.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
+        private readonly SqlJobMonitorContext _dbContext;
+
+        public SampleDataController(SqlJobMonitorContext context)
+        {
+            _dbContext = context;
+        }
 
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
             var rng = new Random();
 
-            _hubContext.Clients.All.SendMessage("message from get","get message");
+            //_hubContext.Clients.All.SendMessage("message from get","get message");
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -30,14 +37,12 @@ namespace AspCoreAngular.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
         }
-
-
-        private IHubContext<MessageHub, IMessageHub> _hubContext;
-
-        public SampleDataController(IHubContext<MessageHub, IMessageHub> hubContext)
+        [HttpGet("[action]")]
+        public IEnumerable<string> GetUsers()
         {
-            _hubContext = hubContext;
+            return _dbContext.Users.Select(u => u.UserName).ToList();
         }
+         
 
         [HttpPost]
         public string Post([FromBody]Message msg)
@@ -46,7 +51,7 @@ namespace AspCoreAngular.Controllers
 
             try
             {
-                _hubContext.Clients.All.SendMessage(msg.User, msg.Text);
+                //_hubContext.Clients.All.SendMessage(msg.User, msg.Text);
                 retMessage = "Success";
             }
             catch (Exception e)

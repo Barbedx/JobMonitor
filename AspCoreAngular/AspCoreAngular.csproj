@@ -22,6 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
@@ -30,6 +31,15 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20190227143257_CreateIdentitySchema.cs" />
+    <Compile Remove="Migrations\20190227143257_CreateIdentitySchema.Designer.cs" />
+    <Compile Remove="Migrations\20190227175011_Firs migration.cs" />
+    <Compile Remove="Migrations\20190227175011_Firs migration.Designer.cs" />
+    <Compile Remove="Migrations\20190227175152_First migration.cs" />
+    <Compile Remove="Migrations\20190227175152_First migration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
