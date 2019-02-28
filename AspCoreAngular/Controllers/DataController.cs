@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AspCoreAngular.Data;
 using EFCore.BulkExtensions; 
 using JobMonitor.BLL.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;

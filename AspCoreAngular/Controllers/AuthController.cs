@@ -3,32 +3,43 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using AspCoreAngular.Data;
 using AspCoreAngular.Enums;
 using AspCoreAngular.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AspCoreAngular.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("[action]")]
     //[Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IConfiguration configuration;
+        private readonly JwtIssuerOptions configuration;
 
+        //private readonly IOptions<JwtIssuerOptions> configuration;
+        [HttpGet]
+        public async Task<List<ApplicationUser>> Users()
+        {
+            return await userManager.Users.ToListAsync();
+        }
 
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, IOptions<JwtIssuerOptions> configuration)
         {
             this.userManager = userManager;
-            this.configuration = configuration;
+            this.configuration = configuration.Value;
         }
 
         //[Route("login")]
@@ -44,10 +55,10 @@ namespace AspCoreAngular.Controllers
                 SecurityStamp = Guid.NewGuid().ToString()
             };
             var result = await userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(user, ApplicationRoles.User);
-            }
+            //if (result.Succeeded)
+            //{
+            //    await userManager.AddToRoleAsync(user, ApplicationRoles.User);
+            //}
             return Ok(new { Username = user.UserName });
         }
 
@@ -55,24 +66,31 @@ namespace AspCoreAngular.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
+
+            if (!ModelState.IsValid)/// we realy need this????
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = await userManager.FindByNameAsync(model.UserName);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
-                var claims = new[]
+                var claims =  new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 
-                var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SigningKey"]));
-                var expireInMinutes = Convert.ToInt32(configuration["Jwt:ExpiryInMinutes"]);
+                //  configuration["Jwt:SigningKey"]));
+                var expireInMinutes = configuration.Expiration;
+
 
                 var jwcToken = new JwtSecurityToken(
-                    issuer: configuration["Jwt:site"],
-                    audience: configuration["Jwt:site"],
-                    expires: DateTime.UtcNow.AddMinutes(expireInMinutes),
+                    issuer:  configuration.Issuer,
+                    audience: configuration.Audience,
+                    expires: configuration.Expiration,
                     claims: claims,
-                    signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+                    signingCredentials:  configuration.SigningCredentials
                     );
                 return Ok(new
                 {

@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging.Console;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AspCoreAngular.Enums;
+using System;
 
 namespace AspCoreAngular
 {
@@ -29,6 +31,10 @@ namespace AspCoreAngular
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+        
+
+
             services.AddLogging(b => b.AddConsole().AddDebug().AddEventSourceLogger());
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -43,6 +49,8 @@ namespace AspCoreAngular
                .AllowAnyOrigin();
            }));
             services.AddSignalR(cnfg => cnfg.EnableDetailedErrors = true);
+
+
             services.AddDbContext<SqlJobMonitorContext>(optionsBuilder =>
             {
 
@@ -62,25 +70,45 @@ namespace AspCoreAngular
                     .AddEntityFrameworkStores<SqlJobMonitorContext>()
                     .AddDefaultTokenProviders();
 
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            var _signingkey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtAppSettingOptions[nameof(JwtIssuerOptions.SecretKey)]));
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingkey, SecurityAlgorithms.HmacSha256);
+                options.ValidFor = TimeSpan.FromMinutes(Convert.ToInt32(jwtAppSettingOptions[nameof(JwtIssuerOptions.ValidFor)]));
+            });
+
+            //var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(optionsBearer =>
-            {
-                optionsBearer.SaveToken = true;
-                optionsBearer.RequireHttpsMetadata = false;
-                optionsBearer.TokenValidationParameters = new TokenValidationParameters()
+            }).AddJwtBearer(optionsBearer =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = Configuration["Jwt:site"],
-                    ValidIssuer =   Configuration["Jwt:site"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
-                };
+                    optionsBearer.SaveToken = true;
+                    optionsBearer.RequireHttpsMetadata = false;
+                    optionsBearer.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],//Configuration["Jwt:site"],
+                        ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)], //Configuration["Jwt:site"],
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey =  _signingkey // new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
+                    } ;
+
+                });
+
+            // api user claim policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
             });
+
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
