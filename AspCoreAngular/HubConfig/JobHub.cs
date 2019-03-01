@@ -1,9 +1,6 @@
-﻿using JobMonitor.BLL.Model;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AspCoreAngular.HubConfig

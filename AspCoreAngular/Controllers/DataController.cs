@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AspCoreAngular.Data;
-using EFCore.BulkExtensions; 
+using EFCore.BulkExtensions;
 using JobMonitor.BLL.Model;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace AspCoreAngular.Controllers
 {

@@ -3,8 +3,6 @@ using JobMonitor.BLL.Model;
 using JobMonitor.DAL;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace JobMonitor.Console.Commands
 {

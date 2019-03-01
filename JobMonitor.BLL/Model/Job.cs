@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Drawing;
-using JobMonitor.DAL;
 using Newtonsoft.Json;
 
 namespace JobMonitor.BLL.Model

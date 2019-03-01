@@ -12,7 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 //import { AuthGuard } from './_guards';
 
 const appRoutes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent  ,  canActivate: [AuthGuard] },
     { path: 'loginForm', component: LoginComponent },
     { path: 'registerForm', component: RegisterComponent },
     { path: 'counter', component: CounterComponent },

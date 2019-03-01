@@ -1,6 +1,5 @@
 using AspCoreAngular.HubConfig;
 using AspCoreAngular.Data;
-using JobMonitor.BLL.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -58,7 +56,7 @@ namespace AspCoreAngular
                 optionsBuilder.UseSqlServer(Configuration["connectionStrings:SqlAzureDatabase"]);
             }
             );
-
+            #region AUTH
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -109,7 +107,7 @@ namespace AspCoreAngular
             });
 
 
-
+            #endregion
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
         }

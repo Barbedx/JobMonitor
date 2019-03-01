@@ -3,25 +3,18 @@ using JobMonitor.BLL.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AspCoreAngular.Data
 {
     public partial class SqlJobMonitorContext : IdentityDbContext<ApplicationUser>
-    {
-        //public SqlJobMonitorContext()
-        //{
-        //}
-
+    { 
         public SqlJobMonitorContext(DbContextOptions<SqlJobMonitorContext> options)
             : base(options)
         {
-        }
+             Database.EnsureCreated();//???
 
-        //public SqlJobMonitorContext(DbContextOptions options) : base(options)
-        //{
-        //}
+        }
 
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<SqlServer> Servers { get; set; }
@@ -34,7 +27,6 @@ namespace AspCoreAngular.Data
               
 
             }
-            //context.Database.EnsureCreated();//???
 
         }
 
