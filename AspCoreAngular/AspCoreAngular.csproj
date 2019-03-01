@@ -43,7 +43,43 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\account\login-form\index.ts" />
+    <None Remove="ClientApp\src\app\account\registration-form\index.ts" />
+    <None Remove="ClientApp\src\app\shared\models\index.ts" />
+    <None Remove="ClientApp\src\app\shared\models\user.interface.ts" />
+    <None Remove="ClientApp\src\app\shared\_components\alert\alert.component.html" />
+    <None Remove="ClientApp\src\app\shared\_components\alert\alert.component.ts" />
+    <None Remove="ClientApp\src\app\shared\_components\alert\index.ts" />
+    <None Remove="ClientApp\src\app\shared\_guards\auth.guard.ts" />
+    <None Remove="ClientApp\src\app\shared\_guards\index.ts" />
+    <None Remove="ClientApp\src\app\shared\_helpers\error.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\_helpers\index.ts" />
+    <None Remove="ClientApp\src\app\shared\_helpers\jwt.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\_services\alert.service.ts" />
+    <None Remove="ClientApp\src\app\shared\_services\authentication.service.ts" />
+    <None Remove="ClientApp\src\app\shared\_services\index.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\JobMonitor.BLL\JobMonitor.BLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\account\login-form\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\account\registration-form\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\models\user.interface.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_components\alert\alert.component.html" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_components\alert\alert.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_components\alert\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_guards\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_guards\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_helpers\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_helpers\index.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_helpers\error.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_services\alert.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_services\authentication.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\_services\index.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

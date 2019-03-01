@@ -1,36 +1,50 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import {ReactiveFormsModule} from '@angular/forms'
+import { HttpClientModule , HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
+
+ 
+//import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+
+
+
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { GrowlModule } from 'primeng/primeng'
+import { routing } from './app.rounting';
+import { AlertComponent } from './shared/_components/alert';
+import { LoginComponent } from './account/login-form';
+import { RegisterComponent } from './account/registration-form';
+import { JwtInterceptor, ErrorInterceptor } from './shared/_helpers';
 
 @NgModule({
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    //GrowlModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    routing
+  ],
+
   declarations: [
     AppComponent,
+    AlertComponent,
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    LoginComponent,
+    RegisterComponent
   ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    GrowlModule,
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-    ])
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

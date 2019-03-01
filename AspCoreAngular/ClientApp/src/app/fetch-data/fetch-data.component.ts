@@ -19,20 +19,20 @@ export class FetchDataComponent implements OnInit {
   //  }, error => console.error(error));
   //}
   ngOnInit(): void {
-    this._hubConnection = new HubConnectionBuilder()
-      .withUrl('http://sqljobmonitor.azurewebsites.net/jobhub'  )
-      .configureLogging(LogLevel.Trace)
-      .build();
+    //this._hubConnection = new HubConnectionBuilder()
+    //  .withUrl('http://sqljobmonitor.azurewebsites.net/jobhub'  )
+    //  .configureLogging(LogLevel.Trace)
+    //  .build();
 
-    this._hubConnection
-      .start()
-      .then(() => console.log('Connection started!'))
-      .catch(err => console.log('Error while establishing connection :(' + err.error + ')'));
-    this._hubConnection.on('UpdateData', (sender,datetime,jobs) => {
-      this.jobsList = JSON.parse(jobs) as RootObject[];
-      console.log(this.jobsList);
-      this.lastUpdate = datetime;
-    });
+    //this._hubConnection
+    //  .start()
+    //  .then(() => console.log('Connection started!'))
+    //  .catch(err => console.log('Error while establishing connection :(' + err.error + ')'));
+    //this._hubConnection.on('UpdateData', (sender,datetime,jobs) => {
+    //  this.jobsList = JSON.parse(jobs) as RootObject[];
+    //  console.log(this.jobsList);
+    //  this.lastUpdate = datetime;
+    //});
   }
 
 
