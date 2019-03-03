@@ -29,12 +29,7 @@ namespace AspCoreAngular.Controllers
         {
             return await userManager.Users.ToListAsync();
         }
-
-        [HttpGet]
-        public async Task< ApplicationUser> Users(string id)
-        {
-            return await userManager.FindByIdAsync(id);
-        }
+         
 
         public AuthController(UserManager<ApplicationUser> userManager, IOptions<JwtIssuerOptions> configuration)
         {
