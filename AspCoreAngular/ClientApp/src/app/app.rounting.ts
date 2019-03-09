@@ -15,8 +15,8 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent  ,  canActivate: [AuthGuard] },
     { path: 'loginForm', component: LoginComponent },
     { path: 'registerForm', component: RegisterComponent },
-    { path: 'counter', component: CounterComponent },
-    { path: 'fetch-data', component: FetchDataComponent },
+  { path: 'counter', component: CounterComponent, canActivate: [AuthGuard]  },
+  { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuard] },
 
     //RouterModule.forRoot([
   //  { path: '', component: HomeComponent, pathMatch: 'full' },

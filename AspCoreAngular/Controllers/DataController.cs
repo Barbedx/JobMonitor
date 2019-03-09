@@ -41,23 +41,10 @@ namespace AspCoreAngular.Controllers
         public async Task<ActionResult<IEnumerable<Job>>> GetSqlServerList(IList<SqlServer>
             serversJobsData)
         {
-            var username = User.Claims.FirstOrDefault()
+            //TODO: ADD local user settings
+            var username = User.Claims.FirstOrDefault();
             return await _dataBaseContext.Jobs.Include(j => j.SqlServer).ToListAsync();
             
-            try
-            {
-                var jobs = serversJobsData.SelectMany(x => x.Jobs).ToList();
-                _dataBaseContext.BulkInsertOrUpdate(serversJobsData);
-                _dataBaseContext.BulkInsertOrUpdate(jobs);
-                _hubContext.Clients.All.SendMessage("server", "Data has been updated");
-                retMessage = "Success";
-            }
-            catch (Exception e)
-            {
-                retMessage = e.ToString();
-            }
-
-            return retMessage;
         }
 
         [HttpPost("[action]")] 

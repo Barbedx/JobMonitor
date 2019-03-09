@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { AuthenticationService, AlertService } from 'src/app/shared/_services';
+import { AlertService, AuthenticationService } from '../../shared/_services';
+//import { AuthenticationService, AlertService } from 'src/app/shared/_services';
 //import { AlertService } from 'src/app/shared/_services';
 //import { AuthenticationService } from 'src/app/shared/_services';
 
