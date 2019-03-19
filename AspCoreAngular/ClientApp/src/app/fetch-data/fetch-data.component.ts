@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr'
 import { Data } from '@angular/router';
+import { UserService } from '../shared/_services';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -10,29 +12,21 @@ import { Data } from '@angular/router';
 })
 export class FetchDataComponent implements OnInit {
   public jobsList: RootObject[];
+  public servers: string[];
   public lastUpdate : Date
   @Inject('BASE_URL') baseUrl: string;
-  private _hubConnection: HubConnection;
+  //private _hubConnection: HubConnection;
   //constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
   //  http.get<WeatherForecast[]>(baseUrl + 'api/SampleData/WeatherForecasts').subscribe(result => {
   //    this.forecasts = result;
   //  }, error => console.error(error));
   //}
-  ngOnInit(): void {
-    //this._hubConnection = new HubConnectionBuilder()
-    //  .withUrl('http://sqljobmonitor.azurewebsites.net/jobhub'  )
-    //  .configureLogging(LogLevel.Trace)
-    //  .build();
 
-    //this._hubConnection
-    //  .start()
-    //  .then(() => console.log('Connection started!'))
-    //  .catch(err => console.log('Error while establishing connection :(' + err.error + ')'));
-    //this._hubConnection.on('UpdateData', (sender,datetime,jobs) => {
-    //  this.jobsList = JSON.parse(jobs) as RootObject[];
-    //  console.log(this.jobsList);
-    //  this.lastUpdate = datetime;
-    //});
+  constructor(private userService: UserService) { }
+  ngOnInit(): void { 
+    this.userService.getAllServers()
+      .pipe(first())
+      .subscribe(servers => { this.servers = servers })
   }
 
 
@@ -50,10 +44,4 @@ export interface RootObject {
   CurentRetryAttempt: number;
   NextRunDate: Date;
   Enable: boolean;
-}
-interface WeatherForecast {
-  dateFormatted: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+} 
