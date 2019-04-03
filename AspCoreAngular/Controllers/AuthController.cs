@@ -14,8 +14,8 @@ using Microsoft.Extensions.Options;
 
 namespace AspCoreAngular.Controllers
 {
-    [Route("[action]")]
-    //[Route("api/[controller]")]
+    //[Route("[action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [AllowAnonymous]
     public class AuthController : ControllerBase
@@ -23,17 +23,19 @@ namespace AspCoreAngular.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly JwtIssuerOptions configuration;
 
-        //private readonly IOptions<JwtIssuerOptions> configuration;
+
         [HttpGet]
-        public async Task<List<ApplicationUser>> Users()
+        public async Task<List<ApplicationUser>> AllUsers()
         {
             return await userManager.Users.ToListAsync();
         }
 
         [HttpGet]
-        public async Task< ApplicationUser> Users(string id)
+        public async Task<ApplicationUser> Users(string id="")
         {
-            return await userManager.FindByIdAsync(id);
+          
+                return await userManager.FindByIdAsync(id) ;
+            
         }
 
         public AuthController(UserManager<ApplicationUser> userManager, IOptions<JwtIssuerOptions> configuration)
@@ -41,10 +43,8 @@ namespace AspCoreAngular.Controllers
             this.userManager = userManager;
             this.configuration = configuration.Value;
         }
-
-        //[Route("login")]
-        //
-        //[Route("[action]")]
+         
+         //[Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
@@ -62,7 +62,7 @@ namespace AspCoreAngular.Controllers
             return Ok(new { Username = user.UserName });
         }
 
-        //[Route("login")]
+        //[Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {

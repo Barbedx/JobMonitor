@@ -16,12 +16,18 @@ namespace AspCoreAngular.Controllers
     public class DataController : Controller
     {
         private SqlJobMonitorContext _dataBaseContext;
-        private IHubContext<MessageHub, IMessageHub> _hubContext;
+        //private IHubContext<MessageHub, IMessageHub> _hubContext;
 
-        public DataController(SqlJobMonitorContext context, IHubContext<MessageHub, IMessageHub> hubContext)
+        //public DataController(SqlJobMonitorContext context, IHubContext<MessageHub, IMessageHub> hubContext)
+        //{
+        //    _dataBaseContext = context;
+        //    _hubContext = hubContext;
+        //}
+
+        public DataController(SqlJobMonitorContext context )
         {
             _dataBaseContext = context;
-            _hubContext = hubContext;
+            //_hubContext = hubContext;
         }
 
         //public DataController(SqlJobMonitorContext context)
@@ -49,7 +55,7 @@ namespace AspCoreAngular.Controllers
                 var jobs = serversJobsData.SelectMany(x => x.Jobs).ToList();
                 _dataBaseContext.BulkInsertOrUpdate(serversJobsData);
                 _dataBaseContext.BulkInsertOrUpdate(jobs); 
-                _hubContext.Clients.All.SendMessage("server", "Data has been updated");
+                //_hubContext.Clients.All.SendMessage("server", "Data has been updated");
                 retMessage = "Success";
             }
             catch (Exception e)
@@ -70,7 +76,7 @@ namespace AspCoreAngular.Controllers
             {
                 _dataBaseContext.BulkInsertOrUpdate(new List<SqlServer> { server });// Becouse I dont know how to use EF :)
                 _dataBaseContext.BulkInsertOrUpdate(server.Jobs.ToList());
-                _hubContext.Clients.All.SendMessage("server", "Data has been updated");
+                //_hubContext.Clients.All.SendMessage("server", "Data has been updated");
                 retMessage = "Success";
             }
             catch (Exception e)

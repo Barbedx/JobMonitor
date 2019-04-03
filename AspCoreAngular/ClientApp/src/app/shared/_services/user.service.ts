@@ -11,15 +11,15 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getAll() {
-    return this.http.get<User[]>(`/users`);
+    return this.http.get<User[]>('/api/users');
   }
 
   getById(id: number) {
-    return this.http.get(`/users/` + id);
+    return this.http.get('/api//users/' + id);
   }
 
   register(user: User) {
-    return this.http.post(`/Register`, user);
+    return this.http.post('/api/Register', user);
   }
 
   //update(user: User) {
