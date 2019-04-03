@@ -134,7 +134,7 @@ namespace AspCoreAngular
             app.UseCors("CorsPolicy");
             app.UseSignalR(r =>
             {
-                r.MapHub<MessageHub>("/hub");
+                //r.MapHub<MessageHub>("/hub");
                 r.MapHub<JobHub>("/jobhub");
             });
             app.UseMvc(routes =>
@@ -152,7 +152,8 @@ namespace AspCoreAngular
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    // spa.UseAngularCliServer(npmScript: "start");
                 }
             });
 

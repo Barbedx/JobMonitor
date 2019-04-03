@@ -2,8 +2,8 @@
   "name": "AspCoreAngular",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
+    "ng": "ng",    
+    "start": "ng serve --proxy-config proxy.config.json", 
     "build": "ng build",
     "build:ssr": "ng run AspCoreAngular:server:dev",
     "test": "ng test",
