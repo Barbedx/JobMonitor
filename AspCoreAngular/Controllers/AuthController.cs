@@ -75,7 +75,7 @@ namespace AspCoreAngular.Controllers
             var user = await userManager.FindByNameAsync(model.UserName);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
-                var claims =  new[]
+                var claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -86,17 +86,20 @@ namespace AspCoreAngular.Controllers
 
 
                 var jwcToken = new JwtSecurityToken(
-                    issuer:  configuration.Issuer,
+                    issuer: configuration.Issuer,
                     audience: configuration.Audience,
                     expires: configuration.Expiration,
                     claims: claims,
-                    signingCredentials:  configuration.SigningCredentials
+                    signingCredentials: configuration.SigningCredentials
                     );
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(jwcToken),
-                    expiration = jwcToken.ValidTo
-                });
+
+                return
+                    Ok(new
+                    {
+                        userName = user.UserName,
+                        token = new JwtSecurityTokenHandler().WriteToken(jwcToken),
+                        expiration = jwcToken.ValidTo
+                    });
 
             }
             return Unauthorized();

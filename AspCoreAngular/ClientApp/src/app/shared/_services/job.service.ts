@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models';
+//import { Job } from '../models'; 
 
 //import { User } from 'src/app/shared/models';
 
 //import { User } from '../_models';
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class JobService {
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    return this.http.get<User[]>('/api/users');
-  }
+  //getAll() {
+  //  return this.http.get<User[]>(`/users`);
+  //}
 
-  getById(id: number) {
-    return this.http.get('/api//users/' + id);
-  }
+  //getById(id: number) {
+  //  return this.http.get(`/users/` + id);
+  //}
 
-  register(user: User) {
-    return this.http.post('/api/Register', user);
-  }
+  //register(user: User) {
+  //  return this.http.post(`/Register`, user);
+  //}
 
-  getAllServers(){
-    return this.http.get<string[]>('/api/data/ServersPathList');
-  }
   //update(user: User) {
   //  return this.http.put(`/users/` + user.id, user);
   //}

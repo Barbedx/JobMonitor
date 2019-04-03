@@ -1,8 +1,11 @@
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
-
-<table  class='table table-striped' *ngIf="jobsList">
+<p>Servres:</p>
+<ul>
+  <li *ngFor="let serv of servers">{{serv}}</li>
+</ul>
+<table class='table table-striped' *ngIf="jobsList">
   <thead>
     <tr>
       <th>Name</th>
